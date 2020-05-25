@@ -1,7 +1,6 @@
 "use strict";
 
-var carListVieuw = document.getElementById('CarListVieuw');
-var brandListVieuw = document.getElementById('brandListVieuw');
+var CarTableView = document.getElementById('CarTableView');
 var BtnAdd = document.getElementById('BtnAdd');
 var BtnRemove = document.getElementById('BtnRemove');
 var FieldToBeAddedName = document.getElementById('FieldToBeAddedName');
@@ -63,26 +62,28 @@ function BtnRemoveOnClickEvent(){
     var choiceCarName = prompt("Give the name of the car you woud like to delete");
     var choiceCar = OurGarage.GetCarByName(choiceCarName);
     OurGarage.Remove(choiceCar);
+    UpdateLists();
 }
 
 function UpdateLists(){
-    carListVieuw.children.forEach(item => {
+    CarTableView.children.forEach(item => {
         carListVieuw.removeChild(item);
     });
-    brandListVieuw.children.forEach(item => {
-        brandListVieuw.removeChild(item);
-    });
 
     OurGarage.CarList.forEach(car => {
-        var ListItem = document.createElement("li")
-        ListItem.textContent = car.Name;
-        carListVieuw.appendChild(ListItem);
+        var row = document.createElement("tr");
+        var nameEl = document.createElement("td")
+        nameEl.textContent = car.Name;
+        row.appendChild(nameEl);
+        var brandEl = document.createElement("td")
+        brandEl.textContent = car.Brand;
+        row.appendChild(brandEl);
+        var typeEl = document.createElement("td")
+        typeEl.textContent = car.Type;
+        row.appendChild(typeEl);
+        var yearEl = document.createElement("td")
+        yearEl.textContent = car.Year;
+        row.appendChild(yearEl);
+        carListVieuw.appendChild(row);
     });
-
-    OurGarage.CarList.forEach(car => {
-        var ListItem = document.createElement("li")
-        ListItem.textContent = car.Brand;
-        brandListVieuw.appendChild(ListItem);
-    });
-    
 }
