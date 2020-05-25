@@ -10,6 +10,8 @@ var FieldToBeAddedType = document.getElementById('FieldToBeAddedType');
 var DpToBeAddedYear = document.getElementById('DpToBeAddedYear');
 
 var OurGarage = new Garage();
+BtnAdd.addEventListener("click", BtnAddOnClickEvent);
+BtnRemove.addEventListener("click", BtnRemoveOnClickEvent);
 
 
 class Car {
@@ -36,6 +38,14 @@ class Garage {
     Remove(car){
         this.CarList.Remove(car);
     }
+
+    GetCarByName(name) {
+        this.CarList.forEach(item => {
+            if (item.Name = name){
+                return item;
+            }
+        });
+    }
 }
 
 function BtnAddOnClickEvent(){
@@ -47,6 +57,12 @@ function BtnAddOnClickEvent(){
     var Car = new Car(Name, Brand, Type, year);
     OurGarage.Add(Car);
     UpdateLists();
+}
+
+function BtnRemoveOnClickEvent(){
+    var choiceCarName = prompt("Give the name of the car you woud like to delete");
+    var choiceCar = OurGarage.GetCarByName(choiceCarName);
+    OurGarage.Remove(choiceCar);
 }
 
 function UpdateLists(){
