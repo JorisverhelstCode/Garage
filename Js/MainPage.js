@@ -1,5 +1,23 @@
 "use strict";
 
+function BtnAddOnClickEvent(){
+    let Name = FieldToBeAddedName.value;
+    let Brand = FieldToBeAddedBrand.value;
+    let Type = FieldToBeAddedType.value;
+    let year = DpToBeAddedYear.value.year;
+
+    var toBeAddedCar = new Car(Name, Brand, Type, year);
+    OurGarage.Add(toBeAddedCar);
+    UpdateLists();
+}
+
+function BtnRemoveOnClickEvent(){
+    var choiceCarName = prompt("Give the name of the car you woud like to delete");
+    var choiceCar = OurGarage.GetCarByName(choiceCarName);
+    OurGarage.Remove(choiceCar);
+    UpdateLists();
+}
+
 var CarTableView = document.getElementById('CarTableView');
 var BtnAdd = document.getElementById('BtnAdd');
 var BtnRemove = document.getElementById('BtnRemove');
@@ -8,34 +26,31 @@ var FieldToBeAddedBrand = document.getElementById('FieldToBeAddedBrand');
 var FieldToBeAddedType = document.getElementById('FieldToBeAddedType');
 var DpToBeAddedYear = document.getElementById('DpToBeAddedYear');
 
-var OurGarage = new Garage();
+
 BtnAdd.addEventListener("click", BtnAddOnClickEvent);
 BtnRemove.addEventListener("click", BtnRemoveOnClickEvent);
 
 
 class Car {
-
-    constructor(name = "Unnamed", brand = "undefined", type = "Unknown", year = 2000){
-        this.Name = name;
-        this.Brand = brand;
-        this.Type = type;
-        this.Year = year;
+    constructor(name, brand, type, year){
+        this.Name = name ? name: "Unnamed";
+        this.Brand = brand ? brand: "Undefined";
+        this.Type = type ? type: "Unknown";
+        this.Year = year ? year: 2000;
     }
-
-
 }
 
 class Garage {
-    constructor(carList = {}){
+    constructor(carList = []){
         this.CarList = carList;
     }
 
     Add (car){
-        this.CarList.Add(car);
+        this.CarList.push(car);
     }
 
     Remove(car){
-        this.CarList.Remove(car);
+        this.CarList.splice(car);
     }
 
     GetCarByName(name) {
@@ -47,43 +62,28 @@ class Garage {
     }
 }
 
-function BtnAddOnClickEvent(){
-    let Name = FieldToBeAddedName.textContent;
-    let Brand = FieldToBeAddedBrand.textContent;
-    let Type = FieldToBeAddedType.textContent;
-    let year = DpToBeAddedYear.nodeValue;
-
-    var Car = new Car(Name, Brand, Type, year);
-    OurGarage.Add(Car);
-    UpdateLists();
-}
-
-function BtnRemoveOnClickEvent(){
-    var choiceCarName = prompt("Give the name of the car you woud like to delete");
-    var choiceCar = OurGarage.GetCarByName(choiceCarName);
-    OurGarage.Remove(choiceCar);
-    UpdateLists();
-}
+var OurGarage = new Garage();
 
 function UpdateLists(){
-    CarTableView.children.forEach(item => {
-        carListVieuw.removeChild(item);
-    });
+    CarTableView.innerHTML = "";
 
     OurGarage.CarList.forEach(car => {
         var row = document.createElement("tr");
         var nameEl = document.createElement("td")
-        nameEl.textContent = car.Name;
+        nameEl.appendChild(document.createTextNode(car.Name));
         row.appendChild(nameEl);
         var brandEl = document.createElement("td")
-        brandEl.textContent = car.Brand;
+        brandEl.innerText = car.Brand;
         row.appendChild(brandEl);
         var typeEl = document.createElement("td")
-        typeEl.textContent = car.Type;
+        typeEl.innerText = car.Type;
         row.appendChild(typeEl);
         var yearEl = document.createElement("td")
-        yearEl.textContent = car.Year;
+        yearEl.innerText = car.Year;
         row.appendChild(yearEl);
-        carListVieuw.appendChild(row);
+        var btnChange = document.createElement("button")
+        btnChange.textContent = "Change";
+        row.appendChild(btnChange);
+        CarTableView.appendChild(row);
     });
 }
